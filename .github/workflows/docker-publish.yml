@@ -20,7 +20,7 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: quay.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: kviswama/kind-node
+  IMAGE_NAME: kviswana/kind-node
 
 
 jobs:
