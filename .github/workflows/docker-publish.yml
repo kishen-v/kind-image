@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
   schedule:
     # Build the job every day for the master branch
-    - cron: '0 0 * * *'
+    - cron: '* * * * *'
   push:
     branches: [ "main", 'v*.*.*' ]
     tags: [ 'v*.*.*' ]
@@ -20,7 +20,7 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: quay.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: powercloud/kind-node
+  IMAGE_NAME: kviswama/kind-node
 
 
 jobs:
