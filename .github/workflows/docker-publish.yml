@@ -60,8 +60,9 @@ jobs:
       - name: Build and install kind
         run: |
           # The runner has kind pre-installed, removing the same to download the preferred version.
+          echo $(which kind)
           rm -rf $(which kind)
-          echo $PATH
+          export $PATH=$PATH:/home/runner/go/bin/kind
           echo $GOPATH
           git clone --depth 1 --branch ${{ env.KIND_VERSION }} https://github.com/kubernetes-sigs/kind.git
           make -C kind install
