@@ -60,6 +60,9 @@ jobs:
           rm -rf $(which kind)
           echo $GOPATH
           git clone --depth 1 --branch ${{ env.KIND_VERSION }} https://github.com/kubernetes-sigs/kind.git
+          pushd kind
+          git apply ../build-ppc64le.patch 
+          popd
           make -C kind install
           mv /home/runner/go/bin/kind /usr/local/bin/
           kind version
