@@ -59,8 +59,8 @@ jobs:
 
       - name: Build and install kind
         run: |
-          git clone --depth 1 --branch ${{ env.KIND_VERSION }} https://github.com/kubernetes-sigs/kind.git
-          make -C kind install
+          #git clone --depth 1 --branch ${{ env.KIND_VERSION }} https://github.com/kubernetes-sigs/kind.git
+          #make -C kind install
           kind version
 
       - name: Build kind image
