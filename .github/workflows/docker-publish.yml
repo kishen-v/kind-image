@@ -63,7 +63,7 @@ jobs:
           mv /home/runner/go/bin/kind /usr/local/bin/
           kind version
 
-      - name: Build kind-node image - ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.KUBERNETES_VERSION }}
+      - name: Build kind-node image - ${{ env.KUBERNETES_VERSION }}
         run: |
           mkdir -p tmp/kubernetes
           git clone --single-branch --filter=tree:0 --branch ${{ env.KUBERNETES_VERSION }} https://github.com/kubernetes/kubernetes tmp/kubernetes
