@@ -72,4 +72,4 @@ jobs:
       - name: Publish node image
         if: github.event_name != 'pull_request'
         run: |
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.KUBERNETES_VERSION }}
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.KUBERNETES_VERSION }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
