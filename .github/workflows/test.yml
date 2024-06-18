@@ -1,0 +1,35 @@
+name: Build kind-node image for ppc64le
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "v*.*.*" ]
+
+jobs:
+  build:
+    runs-on: self-hosted 
+    permissions:
+      packages: write
+    strategy:
+      fail-fast: false
+    env:
+      # Use docker.io for Docker Hub if empty
+      REGISTRY: quay.io
+      # github.repository as <account>/<repo>
+      IMAGE_NAME: kviswana/kind-node
+
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.4
+
+        run: |
+          # The runner has kind pre-installed, removing the same to download the preferred version.
+          DATA=$(uname -a)
+          echo $DATA
+
