@@ -45,7 +45,7 @@ jobs:
         run: |
           KIND_VERSION=$(cat KIND_VERSION)
           BASE_IMAGE=$(cat BASE_IMAGE)
-          KUBERNETES_VERSION?=$(curl -Ls https://dl.k8s.io/release/stable.txt)
+          KUBERNETES_VERSION=$(curl -Ls https://dl.k8s.io/release/stable.txt)
           echo "KIND_VERSION=$KIND_VERSION" >> $GITHUB_ENV
           echo "BASE_IMAGE=$BASE_IMAGE" >> $GITHUB_ENV
           echo "KUBERNETES_VERSION=$KUBERNETES_VERSION" >> $GITHUB_ENV
