@@ -40,7 +40,7 @@ jobs:
       - name: Build local-path-provisioner
         working-directory: ./kind
         run: |
-          make -C images/local-path-provisioner push
+          REGISTRY=quay.io/kviswana make -C images/local-path-provisioner push
 
       - name: Build local-path-helper
         working-directory: ./kind
