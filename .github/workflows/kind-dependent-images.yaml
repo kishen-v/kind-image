@@ -17,7 +17,7 @@ jobs:
       fail-fast: false
     env:
       # Use docker.io for Docker Hub if empty
-      REGISTRY: quay.io
+      IMAGE_REGISTRY: quay.io
 
       # Override Makefile default variables
       REGISTRY: quay.io/kviswana
@@ -27,10 +27,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4.1.6
 
-      - name: Log into registry ${{ env.REGISTRY }}
+      - name: Log into registry ${{ env.IMAGE_REGISTRY }}
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.REGISTRY }}
+          registry: ${{ env.IMAGE_REGISTRY }}
           username: ${{ secrets.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_PASSWORD }}
 
