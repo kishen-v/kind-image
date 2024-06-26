@@ -44,31 +44,3 @@ index f8226e1..dc9980f 100755
    *)
      exit 1 ;;
  esac
-diff --git a/pkg/build/nodeimage/const_cni.go b/pkg/build/nodeimage/const_cni.go
-index 6715884..bde6799 100644
---- a/pkg/build/nodeimage/const_cni.go
-+++ b/pkg/build/nodeimage/const_cni.go
-@@ -20,7 +20,7 @@ package nodeimage
- The default CNI manifest and images are our own tiny kindnet
- */
- 
--const kindnetdImage = "docker.io/kindest/kindnetd:v20240513-cd2ac642"
-+const kindnetdImage = "quay.io/kviswana/kindnetd:v20240611-d897688d"
- 
- var defaultCNIImages = []string{kindnetdImage}
- 
-diff --git a/pkg/build/nodeimage/const_storage.go b/pkg/build/nodeimage/const_storage.go
-index 7ddb8a6..f1ec3a9 100644
---- a/pkg/build/nodeimage/const_storage.go
-+++ b/pkg/build/nodeimage/const_storage.go
-@@ -25,8 +25,8 @@ NOTE: we have customized it in the following ways:
- - install as the default storage class
- */
- 
--const storageProvisionerImage = "docker.io/kindest/local-path-provisioner:v20240513-b9bba138"
--const storageHelperImage = "docker.io/kindest/local-path-helper:v20230510-486859a6"
-+const storageProvisionerImage = "quay.io/kviswana/local-path-provisioner:v20240611-d897688d"
-+const storageHelperImage = "quay.io/kviswana/local-path-helper:v20240611-d897688d"
- 
- // image we need to preload
- var defaultStorageImages = []string{storageProvisionerImage, storageHelperImage}
