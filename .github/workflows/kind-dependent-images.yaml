@@ -20,7 +20,7 @@ jobs:
       IMAGE_REGISTRY: quay.io
 
       # Override Makefile default variables
-      REGISTRY: quay.io/kviswana
+      REGISTRY: quay.io/powercloud
       PLATFORMS: linux/ppc64le
 
     steps:
@@ -36,14 +36,15 @@ jobs:
 
       - name: Clone and patch kubernetes-sigs/kind repository
         run: |
-          git clone --depth 1 --branch v0.23.0  https://github.com/kubernetes-sigs/kind.git
+          echo "KIND_VERSION=$KIND_VERSION" >> $GITHUB_ENV
+          git clone --depth 1 --branch ${{ env.KIND_VERSION }} https://github.com/kubernetes-sigs/kind.git
           cd kind
           git apply ../build-ppc64le.patch
           echo "TAG=$(date +v%Y%m%d)-$(git describe --always)" >> $GITHUB_ENV
           
       - name: Build local-path-provisioner
         working-directory: ./kind
-        run: |  
+        run: |
           IMAGE_NAME=kind-local-path-provisioner make -C images/local-path-provisioner push
 
       - name: Build local-path-helper
