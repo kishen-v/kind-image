@@ -44,29 +44,29 @@ jobs:
       - name: Build local-path-provisioner
         working-directory: ./kind
         run: |
-          IMAGE="kind-local-path-provisioner"
+          IMAGE_NAME="kind-local-path-provisioner"
           make -C images/local-path-provisioner push
 
       - name: Build local-path-helper
         working-directory: ./kind
         run: |
-          IMAGE="kind-local-path-helper"
+          IMAGE_NAME="kind-local-path-helper"
           make -C images/local-path-helper push
 
       - name: Build base
         working-directory: ./kind
         run: |
-          IMAGE="kind-base"
+          IMAGE_NAME="kind-base"
           make -C images/base push
 
       - name: Build kindnetd
         working-directory: ./kind
         run: |
-          IMAGE="kind-kindnetd"
+          IMAGE_NAME="kind-kindnetd"
           make -C images/kindnetd push
 
       - name: Build haproxy
         working-directory: ./kind
         run: |
-          IMAGE="kind-haproxy"
+          IMAGE_NAME="kind-haproxy"
           make -C images/haproxy push
