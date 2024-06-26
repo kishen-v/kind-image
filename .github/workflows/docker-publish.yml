@@ -64,6 +64,8 @@ jobs:
           which go
           go version
           export PATH=$PATH:$(go env GOPATH)/bin
+          kind version
+          ls -ltra $(which kind)
           rm -rf $(which kind)
 
           git clone --depth 1 --branch ${{ env.KIND_VERSION }} https://github.com/kubernetes-sigs/kind.git
