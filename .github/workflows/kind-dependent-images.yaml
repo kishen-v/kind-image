@@ -39,7 +39,7 @@ jobs:
           git clone --depth 1 --branch v0.23.0  https://github.com/kubernetes-sigs/kind.git
           cd kind
           git apply ../build-ppc64le.patch
-          echo "TAG=$(date +v%Y%m%d)-$$(git describe --always)" >> $GITHUB_ENV
+          echo "TAG=$(date +v%Y%m%d)-$(git describe --always)" >> $GITHUB_ENV
           
       - name: Build local-path-provisioner
         working-directory: ./kind
