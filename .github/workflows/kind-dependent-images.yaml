@@ -36,8 +36,7 @@ jobs:
 
       - name: Clone and patch kubernetes-sigs/kind repository
         run: |
-          echo "KIND_VERSION=$KIND_VERSION" >> $GITHUB_ENV
-          git clone --depth 1 --branch ${{ env.KIND_VERSION }} https://github.com/kubernetes-sigs/kind.git
+          git clone --depth 1 --branch $(cat KIND_VERSION) https://github.com/kubernetes-sigs/kind.git
           cd kind
           git apply ../build-ppc64le.patch
           echo "TAG=$(date +v%Y%m%d)-$(git describe --always)" >> $GITHUB_ENV
