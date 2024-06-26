@@ -29,7 +29,7 @@ jobs:
       # Use docker.io for Docker Hub if empty
       REGISTRY: quay.io
       # github.repository as <account>/<repo>
-      IMAGE_NAME: powercloud/kind-node
+      IMAGE_NAME: kviswana/kind-node
 
 
     steps:
@@ -53,10 +53,8 @@ jobs:
         run: |
           KIND_VERSION=$(cat KIND_VERSION)
           BASE_IMAGE=$(cat BASE_IMAGE)
-          KUBERNETES_VERSION=$(curl -Ls https://dl.k8s.io/release/stable.txt)
           echo "KIND_VERSION=$KIND_VERSION" >> $GITHUB_ENV
           echo "BASE_IMAGE=$BASE_IMAGE" >> $GITHUB_ENV
-          echo "KUBERNETES_VERSION=$KUBERNETES_VERSION" >> $GITHUB_ENV
 
       - name: Build and install kind - ${{ env.KIND_VERSION }}
         run: |
@@ -68,8 +66,6 @@ jobs:
           git apply ../build-ppc64le.patch 
           popd
           make -C kind install
-          mv /home/runner/go/bin/kind /usr/local/bin/
-          kind version
 
       - name: Build kind-node image - ${{ matrix.version  }}
         run: |
