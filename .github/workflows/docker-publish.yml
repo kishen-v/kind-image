@@ -64,21 +64,16 @@ jobs:
           which go
           go version
           export PATH=$PATH:$(go env GOPATH)/bin
-          ls -ltra /usr/local/bin
           ls -ltra $(which kind)
-          which kind
-          kind --version
-          echo GOPATH=$GOPATH
-          echo GOBIN=$GOBIN
-          echo PATH=$PATH
-      #     rm -rf $(which kind)
-      #     git clone --depth 1 --branch ${{ env.KIND_VERSION }} https://github.com/kubernetes-sigs/kind.git
-      #     pushd kind
-      #     git apply ../build-ppc64le.patch 
-      #     popd
-      #     make -C kind install
-      #     mv /home/runner/go/bin/kind /usr/local/bin/
-      #     kind version
+          rm -rf $(which kind)
+
+          git clone --depth 1 --branch ${{ env.KIND_VERSION }} https://github.com/kubernetes-sigs/kind.git
+          pushd kind
+          git apply ../build-ppc64le.patch 
+          popd
+          make -C kind install
+          kind version
+          ls -ltra $(which kind)
 
       # - name: Build kind-node image - ${{ env.KUBERNETES_VERSION }}
       #   run: |
