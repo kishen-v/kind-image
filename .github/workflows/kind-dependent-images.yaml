@@ -44,49 +44,29 @@ jobs:
       - name: Build local-path-provisioner
         working-directory: ./kind
         run: |
-<<<<<<< Updated upstream
-          REGISTRY=quay.io/kviswana make -C images/local-path-provisioner push
-=======
           IMAGE="kind-local-path-provisioner"
           make -C images/local-path-provisioner push
->>>>>>> Stashed changes
 
       - name: Build local-path-helper
         working-directory: ./kind
         run: |
-<<<<<<< Updated upstream
-          REGISTRY=quay.io/kviswana make -C images/local-path-helper push
-=======
           IMAGE="kind-local-path-helper"
           make -C images/local-path-helper push
->>>>>>> Stashed changes
 
       - name: Build base
         working-directory: ./kind
         run: |
-<<<<<<< Updated upstream
-          REGISTRY=quay.io/kviswana make -C images/base push
-=======
           IMAGE="kind-base"
           make -C images/base push
->>>>>>> Stashed changes
 
       - name: Build kindnetd
         working-directory: ./kind
         run: |
-<<<<<<< Updated upstream
-          REGISTRY=quay.io/kviswana make -C images/kindnetd push
-=======
           IMAGE="kind-kindnetd"
           make -C images/kindnetd push
->>>>>>> Stashed changes
 
       - name: Build haproxy
         working-directory: ./kind
         run: |
-<<<<<<< Updated upstream
-          REGISTRY=quay.io/kviswana make -C images/haproxy push
-=======
           IMAGE="kind-haproxy"
           make -C images/haproxy push
->>>>>>> Stashed changes
