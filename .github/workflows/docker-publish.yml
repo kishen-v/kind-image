@@ -63,13 +63,14 @@ jobs:
           # The runner has kind pre-installed, removing the same to download the preferred version.
           which go
           go version
-          go env
+          PATH=$PATH:$(go env GOPATH/bin)
           ls -ltra /usr/local/bin
           ls -ltra $(which kind)
           which kind
           kind --version
           echo GOPATH=$GOPATH
           echo GOBIN=$GOBIN
+          echo PATH=$PATH
       #     rm -rf $(which kind)
       #     git clone --depth 1 --branch ${{ env.KIND_VERSION }} https://github.com/kubernetes-sigs/kind.git
       #     pushd kind
