@@ -64,6 +64,8 @@ jobs:
           ls -ltra $(which kind)
           which kind
           kind --version
+          echo $GOPATH
+          echo $GOBIN
       #     rm -rf $(which kind)
       #     git clone --depth 1 --branch ${{ env.KIND_VERSION }} https://github.com/kubernetes-sigs/kind.git
       #     pushd kind
