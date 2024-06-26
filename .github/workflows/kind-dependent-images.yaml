@@ -19,6 +19,9 @@ jobs:
       # Use docker.io for Docker Hub if empty
       REGISTRY: quay.io
 
+      # Override Makefile default variables
+      REGISTRY: quay.io/kviswana
+      PLATFORMS: linux/ppc64le
 
     steps:
       - name: Checkout repository
@@ -36,28 +39,54 @@ jobs:
           git clone --depth 1 --branch v0.23.0  https://github.com/kubernetes-sigs/kind.git
           cd kind
           git apply ../build-ppc64le.patch
+          echo "TAG="$(date +v%Y%m%d)-$$(git describe --always)" >> $GITHUB_ENV
           
       - name: Build local-path-provisioner
         working-directory: ./kind
         run: |
+<<<<<<< Updated upstream
           REGISTRY=quay.io/kviswana make -C images/local-path-provisioner push
+=======
+          IMAGE="kind-local-path-provisioner"
+          make -C images/local-path-provisioner push
+>>>>>>> Stashed changes
 
       - name: Build local-path-helper
         working-directory: ./kind
         run: |
+<<<<<<< Updated upstream
           REGISTRY=quay.io/kviswana make -C images/local-path-helper push
+=======
+          IMAGE="kind-local-path-helper"
+          make -C images/local-path-helper push
+>>>>>>> Stashed changes
 
       - name: Build base
         working-directory: ./kind
         run: |
+<<<<<<< Updated upstream
           REGISTRY=quay.io/kviswana make -C images/base push
+=======
+          IMAGE="kind-base"
+          make -C images/base push
+>>>>>>> Stashed changes
 
       - name: Build kindnetd
         working-directory: ./kind
         run: |
+<<<<<<< Updated upstream
           REGISTRY=quay.io/kviswana make -C images/kindnetd push
+=======
+          IMAGE="kind-kindnetd"
+          make -C images/kindnetd push
+>>>>>>> Stashed changes
 
       - name: Build haproxy
         working-directory: ./kind
         run: |
+<<<<<<< Updated upstream
           REGISTRY=quay.io/kviswana make -C images/haproxy push
+=======
+          IMAGE="kind-haproxy"
+          make -C images/haproxy push
+>>>>>>> Stashed changes
