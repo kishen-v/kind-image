@@ -7,9 +7,15 @@ name: Docker
 
 on:
   workflow_dispatch:
+    inputs:
+      k8s-version:
+        description: 'The kubernetes version to be used for building node image.'
+        default: 'master'
+        required: false
+        type: string
   schedule:
     # Build the job every day for the master branch
-    - cron: '0 0 * * *'
+    - cron: '0 9 * * *'
   push:
     branches: [ "main", 'v*.*.*' ]
     tags: [ 'v*.*.*' ]
@@ -30,8 +36,13 @@ jobs:
       packages: write
     strategy:
       fail-fast: false
-      matrix:
-        version: ["master"]
+
+    env:
+      # Use docker.io for Docker Hub if empty
+      REGISTRY: quay.io
+      # github.repository as <account>/<repo>
+      IMAGE_NAME: kviswana/kind-node
+
 
     steps:
       - name: Checkout repository
@@ -68,8 +79,15 @@ jobs:
           mkdir -p tmp/kubernetes
           git clone --single-branch --branch ${{ matrix.version }} https://github.com/kubernetes/kubernetes tmp/kubernetes
           kind build node-image $PWD/tmp/kubernetes --arch ppc64le --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.version }} --base-image ${{ env.BASE_IMAGE }} 
+          make -C kind install
+
+      - name: Build kind-node image - ${{ inputs.k8s-version }}
+        run: |
+          mkdir -p tmp/kubernetes
+          git clone --single-branch --filter=tree:0 --branch ${{ inputs.k8s-version }} https://github.com/kubernetes/kubernetes tmp/kubernetes
+          kind build node-image $PWD/tmp/kubernetes --arch ppc64le --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ inputs.k8s-version }} --base-image ${{ env.BASE_IMAGE }}
 
       - name: Publish image
         if: github.event_name != 'pull_request'
         run: |
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.version }}
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ inputs.k8s-version }}
