@@ -7,14 +7,16 @@ name: Docker
 
 on:
   workflow_dispatch:
-  schedule:
-    # Build the job every day for the master branch
-    - cron: '0 0 * * *'
+    inputs:
+      k8s-version:
+        description: 'The kubernetes version to be used for building node image.'
+        default: 'master'
+        required: false
+        type: string
   push:
-    branches: [ "main", 'v*.*.*' ]
-    tags: [ 'v*.*.*' ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main", 'v*.*.*' ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -23,13 +25,11 @@ jobs:
       packages: write
     strategy:
       fail-fast: false
-      matrix:
-        version: ["master"]
     env:
       # Use docker.io for Docker Hub if empty
       REGISTRY: quay.io
       # github.repository as <account>/<repo>
-      IMAGE_NAME: powercloud/kind-node
+      IMAGE_NAME: kviswana/kind-node
 
 
     steps:
@@ -46,7 +46,7 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ secrets.QUAY_USERNAME }}
+          username: ${{ vars.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_PASSWORD }}
 
       - name: Set variables
@@ -69,13 +69,13 @@ jobs:
 
           make -C kind install
 
-      - name: Build kind-node image - ${{ matrix.version }}
+      - name: Build kind-node image - ${{ inputs.k8s-version }}
         run: |
           mkdir -p tmp/kubernetes
-          git clone --single-branch --filter=tree:0 --branch ${{ matrix.version }} https://github.com/kubernetes/kubernetes tmp/kubernetes
-          kind build node-image $PWD/tmp/kubernetes --arch ppc64le --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.version }} --base-image ${{ env.BASE_IMAGE }}
+          git clone --single-branch --filter=tree:0 --branch ${{ inputs.k8s-version }} https://github.com/kubernetes/kubernetes tmp/kubernetes
+          kind build node-image $PWD/tmp/kubernetes --arch ppc64le --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ inputs.k8s-version }} --base-image ${{ env.BASE_IMAGE }}
 
       - name: Publish node image
         if: github.event_name != 'pull_request'
         run: |
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.version }}
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ inputs.k8s-version }}
