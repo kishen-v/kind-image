@@ -11,7 +11,7 @@ on:
       k8s-version:
         description: 'The kubernetes version to be used for building node image.'
         default: 'master'
-        required: false
+        required: true
         type: string
   push:
     branches: [ "main" ]
