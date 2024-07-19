@@ -30,6 +30,10 @@ jobs:
       REGISTRY: quay.io
       # github.repository as <account>/<repo>
       IMAGE_NAME: powercloud/kind-node
+      # Until variables are available across different contexts, this change can set a default value for k8s-version
+      # https://github.com/orgs/community/discussions/26322#discussioncomment-3251442
+      # k8s-version: ${{ github.event_name == 'push'|| github.event_name == 'pull_request' && 'master' || inputs.k8s-version }}
+      k8s-version: ${{ inputs.k8s-version || 'master' }}
 
 
     steps:
@@ -69,15 +73,15 @@ jobs:
 
           make -C kind install
 
-      - name: Build kind-node image - ${{ github.event.inputs.k8s-version }}
+      - name: Build kind-node image - ${{ env.k8s-version }}
         run: |
           mkdir -p tmp/kubernetes
-          git clone --single-branch --filter=tree:0 --branch ${{ github.event.inputs.k8s-version }} https://github.com/kubernetes/kubernetes tmp/kubernetes
-          kind build node-image $PWD/tmp/kubernetes --arch ppc64le --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.inputs.k8s-version }} --base-image ${{ env.BASE_IMAGE }}
+          git clone --single-branch --filter=tree:0 --branch ${{ env.k8s-version }} https://github.com/kubernetes/kubernetes tmp/kubernetes
+          kind build node-image $PWD/tmp/kubernetes --arch ppc64le --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.k8s-version }} --base-image ${{ env.BASE_IMAGE }}
 
-      - name: Publish node image - ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.inputs.k8s-version }}
+      - name: Publish node image - ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.k8s-version }}
         # Modifying or adding new changes to the workflow does not necessarily require the built image to be pushed.
         # Images can solely be built through workflow dispatch.
         if: github.event_name != 'pull_request' || github.event_name != 'push'
         run: |
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.inputs.k8s-version }}
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.k8s-version }}
