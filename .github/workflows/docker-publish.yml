@@ -69,15 +69,15 @@ jobs:
 
           make -C kind install
 
-      - name: Build kind-node image - ${{ inputs.k8s-version }}
+      - name: Build kind-node image - ${{ github.event.inputs.k8s-version }}
         run: |
           mkdir -p tmp/kubernetes
-          git clone --single-branch --filter=tree:0 --branch ${{ inputs.k8s-version }} https://github.com/kubernetes/kubernetes tmp/kubernetes
-          kind build node-image $PWD/tmp/kubernetes --arch ppc64le --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ inputs.k8s-version }} --base-image ${{ env.BASE_IMAGE }}
+          git clone --single-branch --filter=tree:0 --branch ${{ github.event.inputs.k8s-version }} https://github.com/kubernetes/kubernetes tmp/kubernetes
+          kind build node-image $PWD/tmp/kubernetes --arch ppc64le --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.inputs.k8s-version }} --base-image ${{ env.BASE_IMAGE }}
 
-      - name: Publish node image
+      - name: Publish node image - ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.inputs.k8s-version }}
         # Modifying or adding new changes to the workflow does not necessarily require the built image to be pushed.
         # Images can solely be built through workflow dispatch.
         if: github.event_name != 'pull_request' || github.event_name != 'push'
         run: |
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ inputs.k8s-version }}
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.inputs.k8s-version }}
