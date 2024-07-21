@@ -28,8 +28,10 @@ jobs:
     env:
       # Use docker.io for Docker Hub if empty
       REGISTRY: quay.io
+      # Organisation or account username.
+      QUAY_USERNAME: powercloud
       # github.repository as <account>/<repo>
-      IMAGE_NAME: ${{ secrets.QUAY_USERNAME }}/kind-node
+      IMAGE_NAME: kind-node
       # Until variables are available across different github_events as a feature,
       # this operation can set a default value for k8s-version to 'master'
       # https://github.com/orgs/community/discussions/26322#discussioncomment-3251442
@@ -77,11 +79,11 @@ jobs:
         run: |
           mkdir -p tmp/kubernetes
           git clone --single-branch --filter=tree:0 --branch ${{ env.K8S-VERSION }} https://github.com/kubernetes/kubernetes tmp/kubernetes
-          kind build node-image $PWD/tmp/kubernetes --arch ppc64le --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.K8S-VERSION }} --base-image ${{ env.BASE_IMAGE }}
+          kind build node-image $PWD/tmp/kubernetes --arch ppc64le --image ${{ env.REGISTRY }}/${{ env.QUAY_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.K8S-VERSION }} --base-image ${{ env.BASE_IMAGE }}
 
-      - name: Publish node image - ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.K8S-VERSION }}
+      - name: Publish node image - ${{ env.REGISTRY }}/${{ env.QUAY_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.K8S-VERSION }}
         # Modifying or adding new changes to the workflow does not necessarily require the built image to be pushed.
         # Images can solely be built through workflow dispatch.
         if: github.event_name != 'pull_request' && github.event_name != 'push'
         run: |
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.K8S-VERSION }}
+          docker push ${{ env.REGISTRY }}/${{ env.QUAY_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.K8S-VERSION }}
