@@ -46,7 +46,7 @@ jobs:
         make -C kind build
 
     - name: Upload KIND binary as artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: kind-binary
         path: kind/bin/kind
