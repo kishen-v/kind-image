@@ -43,10 +43,10 @@ jobs:
         popd
         
         # Build and install KIND
-        make -C kind build
+        GOOS=linux GOARCH=ppc64le make -C kind build
 
     - name: Upload KIND binary as artifact
       uses: actions/upload-artifact@v4
       with:
-        name: kind-binary
+        name: kind
         path: kind/bin/kind
